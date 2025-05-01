@@ -1,2 +1,64 @@
-# Predicting-Farmer-Income-India
+# Problem Statement
 Predict farmer incomes to support fair and accessible lending of funds. Using a rich mix of data—from weather and soil quality to market prices and crop yields create models that improve credit assessments for farmers across India.
+
+
+Access to credit is the key to attaining full economic potential. People employed in farming and allied activities struggle to get loans due to insufficient or non-existent credit histories. As a result, this population is often exploited by untrustworthy lenders. L&T Finance (LTF) aims to broaden financial inclusion for the unbanked population by providing a positive and safe borrowing experience. To ensure a safe borrowing experience, LTF utilizes several data sources to assess the creditworthiness of the population. In addition to traditional credit data vendors, we leverage weather monitoring datasets, soil quality data, crop yield, commodity price dynamics, and land records to predict their client’s ability and willingness for repayment.
+
+Although LTF uses state-of-the-art models that leverage statistical and machine learning models along with emergent GenAl literature to profile and predict the creditworthiness of the farming population. We challenge economic modelling community to help us unlock the full potential of our data assets and raise our methods of assessing creditworthiness to a level where the loan application of a farming professional worthy of repayment should not get rejected. We also encourage the teams to acquire and use alternate public or private data sources that may help improve the credit assessment model.
+
+The solution will be evaluated based on MAPE (mean absolute percentage error) of predicted farmer income on unseen data.
+
+# Project README
+
+This notebook analyzes the provided dataset and develops a model to predict the target variable ('Target_Variable/Total Income').
+
+## Step-by-Step Process
+
+1.  **Import Libraries:** Necessary libraries for data manipulation, numerical operations, machine learning (data splitting, preprocessing, modeling, evaluation), and visualization are imported.
+    * `pandas` for data manipulation and analysis.
+    * `numpy` for numerical operations.
+    * Modules from `sklearn` including `train_test_split`, `OneHotEncoder`, `StandardScaler`, `SimpleImputer`, `ColumnTransformer`, `Pipeline`, and `LinearRegression` for building a machine learning pipeline.
+    * Metrics from `sklearn.metrics` such as `mean_absolute_error`, `mean_squared_error`, and `r2_score` for model evaluation.
+    * `matplotlib.pyplot` and `seaborn` for data visualization.
+
+2.  **Load and Initial Data Cleaning:** The training and testing datasets are loaded from an Excel file.
+    * Column names are cleaned by removing leading/trailing spaces and replacing multiple internal spaces with a single space.
+    * Object type columns (strings) are converted to uppercase and extra spaces are removed to ensure consistency.
+
+3.  **Target Variable Analysis:** The distribution of the target variable ('Target_Variable/Total Income') in the training data is examined.
+    * Descriptive statistics are generated.
+    * The distribution is visualized using a histogram, Kernel Density Estimate (KDE) plot, and a boxplot to identify its shape and potential outliers.
+    * Skewness and Kurtosis are calculated to quantify the asymmetry and peakedness of the distribution.
+
+4.  **Target Variable Transformation:** A log transformation (`np.log1p`) is applied to the target variable to address the skewness observed in the distribution and handle zero values gracefully. The distribution is then re-analyzed after the transformation.
+
+## Observations
+
+* The initial analysis of the target variable ('Target_Variable/Total Income') revealed a highly skewed distribution with the presence of outliers.
+* Applying a log transformation (`np.log1p`) significantly reduced the skewness of the target variable, making it more suitable for linear modeling techniques.
+* The notebook sets up lists for handling different types of features (columns to drop, one-hot encode, and transform)
+
+## Models and Metrics
+
+Several regression models were evaluated using K-Fold cross-validation based on State/Region Grouping. The primary evaluation metrics used were Mean Absolute Error (MAE) and Mean Absolute Percentage Error (MAPE) on the actual (non-transformed) income values.
+
+* **Models Evaluated:**
+
+    ### Iter 1: Linear Regression
+
+    **Models Considered (MAPE < 10%):**
+    * Model (Fold) with MAE = 317876.24, MAPE = 0.28%
+    * Model (Fold) with MAE = 413720.60, MAPE = 0.29%
+
+    ### Iter 2: Elastic Net (Lasso and Ridge Regression)
+
+    Hyperparameters: Alpha = 0.7, L1 Ratio = 0.9.
+
+    **Models Considered (MAPE < 10%):**
+    * Model (Fold) with MAE = 467657.84, MAPE = 0.30%
+    * Model (Fold) with MAE = 397467.91, MAPE = 0.35%
+
+    * **The final prediction for the test dataset is generated by averaging the outputs of the best performing models across the cross-validation folds.** This ensemble approach aims to leverage the strengths of individual models and improve overall prediction robustness.
+
+
+The notebook successfully performs initial data loading, cleaning, and addresses the distribution of the target variable through transformation. The commented-out sections outline a clear plan for building and evaluating a predictive model, likely a regression model to estimate total income. To get a complete understanding of the modeling approach and final results, the commented-out code would need to be executed and analyzed.
